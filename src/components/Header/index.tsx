@@ -3,10 +3,13 @@ import styles from './styles.module.scss';
 
 export default function Header() {
   const [session] = useSession();
+
   return (
     <header className={styles.headerContainer}>
       {session ? (<>
-        <input type="search" name="" id="" alt="Search Repo" />
+        <form action="/search">
+          <input type="search" name="q" id="" alt="Search Repo" />
+        </form>
         <details className={styles.detailsOverlay}>
           <summary>
             <img src={session.user.image} alt="User Avatar" className={styles.userAvatar} sizes="20" />
@@ -18,7 +21,7 @@ export default function Header() {
           </menu>
         </details>
       </>) : (<>
-        <button onClick={() => signIn()}>Sign in</button>
+        <button onClick={() => signIn('github')}>Sign in</button>
       </>)
       }
     </header>
