@@ -9,12 +9,11 @@ export default function Home() {
       <Head>
         <title>Github Tags</title>
       </Head>
-      {!session && <>
+      {!session ? (
         <button onClick={() => signIn()}> Login with GitHub</button>
-      </>
-      }{session && <>
-        <button onClick={() => signOut()}> Sign Out</button>
-      </>
+      ) : (
+          <button onClick={() => signOut()}> Sign Out</button>
+        )
       }
     </div>
   );
