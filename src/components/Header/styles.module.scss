@@ -1,0 +1,64 @@
+.headerContainer {
+  background: #2d333b;
+
+  display: flex;
+  align-items: center;
+
+  padding: 16px 32px;
+  line-height: 1.5;
+
+  .detailsOverlay {
+    margin-left: auto;
+    display: block;
+
+    summary {
+      display: list-item;
+    }
+  }
+
+  .userAvatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border-style: none;
+  }
+
+  .detailsMenu {
+    margin-right: 32px;
+    position: absolute;
+    right: 0;
+    background: #323941;
+    border: 1px solid #444c56;
+    width: 180px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-top: 2px;
+    border-radius: 6px;
+    display: block;
+
+    .menuDivider {
+      display: block;
+      height: 0;
+      margin: 8px;
+      border-top: 1px solid #444c56;
+    }
+
+    .menuItem {
+      display: block;
+      padding: 4px 8px 4px 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #adbac7;
+    }
+
+    .menuHeader {
+      padding: 8px 16px;
+    }
+
+    button {
+      background: inherit;
+      color: inherit;
+    }
+  }
+}
