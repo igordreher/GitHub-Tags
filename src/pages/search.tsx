@@ -2,12 +2,13 @@ import { GetServerSideProps } from "next";
 import { getSession } from 'next-auth/client';
 import axios from 'axios';
 
-export default function Search({ searchResult }) {
+import SearchResult from '../components/SearchResult';
 
+export default function Search({ searchResult }) {
   return (
-    <li>
-      {JSON.stringify(searchResult)}
-    </li>
+    <>
+      <SearchResult >{searchResult}</SearchResult>
+    </>
   );
 }
 
@@ -22,20 +23,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     id: number;
     full_name: string;
     description: string;
-    url: string;
+    svn_url: string;
   }
 
   const filter = q ? data.filter((repo: Repo) => {
     return repo.full_name.includes(q as string);
-  }) : data;
+  }) : [];
 
   const result = filter.map((repo: Repo) => {
-    return {
-      id: repo.id,
-      full_name: repo.full_name,
-      description: repo.description,
-      url: repo.url
-    };
+    const { id, description, full_name, svn_url } = repo;
+    return { id, description, name: full_name, url: svn_url };
   });
 
   return {

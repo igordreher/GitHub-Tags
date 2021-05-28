@@ -1,15 +1,27 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background: #22272e;
-    box-sizing: border-box;
+  background: var(--background-1);
+  box-sizing: border-box;
+
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
 }
 
 button {
-    cursor: pointer;
-    border: 0;
-    border-radius: 0;
+  cursor: pointer;
+  border: 0;
+  border-radius: 0;
+}
+
+:root {
+  --background-1: #22272e;
+  --background-2: #2d333b;
+  --border: #444c56;
+  --text-primary: #adbac7;
+  --text-link: #539bf5;
 }
