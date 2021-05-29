@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/client';
 import { useState } from 'react';
+import { getStarredRepos } from './api/starred';
 import styles from '../styles/search.module.scss';
 
 interface Repository {
@@ -51,23 +50,11 @@ export default function Search({ starredRepos }: Props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx);
-  const { q } = ctx.query;
-  const name = session.user.name.replace(' ', '');
-  const { data } = await axios.get(`https://api.github.com/users/${name}/starred`);
-
-  const filter = q ? data.filter((repo) => {
-    return repo.full_name.includes(q as string);
-  }) : data;
-
-  const result = filter.map((repo) => {
-    const { id, description, full_name, svn_url } = repo;
-    return { id, description, name: full_name, url: svn_url };
-  });
+  const starredRepos = await getStarredRepos(ctx);
 
   return {
     props: {
-      starredRepos: result
+      starredRepos
     }
   };
 };
