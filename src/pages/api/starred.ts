@@ -11,11 +11,11 @@ interface Repo {
 
 export const getStarredRepos = async (ctx: GetServerSidePropsContext) => {
     const session = await getSession(ctx);
-    const { q } = ctx.query;
+    const q = ctx.query.q as string || '';
     const name = session.user.name.replace(' ', '');
     const { data } = await axios.get<Repo[]>(`https://api.github.com/users/${name}/starred`);
 
-    const filter = q ? data.filter((repo) => {
+    const filter = q.charAt(0) != '@' ? data.filter((repo) => {
         return repo.full_name.includes(q as string);
     }) : data;
 
