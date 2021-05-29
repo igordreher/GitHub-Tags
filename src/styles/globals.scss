@@ -10,6 +10,7 @@ body {
   font-size: 14px;
   line-height: 1.5;
   color: var(--text-primary);
+  word-wrap: break-word;
 }
 
 button {
@@ -21,7 +22,9 @@ button {
 :root {
   --background-1: #22272e;
   --background-2: #2d333b;
+  --background-button: #373e47;
   --border: #444c56;
+  --border-button: #444c56;
   --text-primary: #adbac7;
   --text-link: #539bf5;
 }

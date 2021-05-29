@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  margin-top: 24px;
+
+  .repoList {
+    margin: 0 auto;
+    padding: 24px 0;
+    list-style: none;
+
+    h3 {
+      font-weight: 600;
+      font-size: 20px;
+
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    li {
+      padding-top: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+
+      a {
+        font-weight: 400;
+        font-size: 16px;
+        color: var(--text-link);
+      }
+
+      p {
+        padding-top: 3px;
+      }
+
+      button {
+        margin-left: 24px;
+        background: var(--background-button);
+
+        padding: 3px 12px;
+        font-size: 12px;
+        line-height: 20px;
+        border: 1px solid var(--border-button);
+        border-radius: 6px;
+      }
+
+      .popup {
+        position: relative;
+
+        input {
+          width: 100px;
+          height: 28px;
+          border-radius: 6px;
+          border: 0;
+
+          text-align: center;
+
+          position: absolute;
+          left: 150px;
+          top: -70px;
+        }
+      }
+    }
+  }
+}
