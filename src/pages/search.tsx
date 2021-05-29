@@ -11,42 +11,43 @@ interface Repository {
   tags?: string[];
 }
 
-interface Props {
-  starredRepos: Repository[];
+interface SearchProps {
+  searchResults: Repository[];
 }
 
-export default function Search({ starredRepos }: Props) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [repos, setRepos] = useState<Repository[]>(starredRepos);
+interface RepositoryProps {
+  children: Repository;
+}
 
-  const toggleIsOpen = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleInputKeyDown = (event) => {
-    if (event.key === 'Enter')
-      setIsOpen(false);
-  };
+export default function Search({ searchResults }: SearchProps) {
+  const [repos, setRepos] = useState<Repository[]>(searchResults);
 
   return (
     <div className={styles.container}>
       <ul className={styles.repoList}>
         <h3>{repos.length} repository results</h3>
         {repos.map(repo => {
-          return (<li key={repo.id}>
-            <a href={repo.url}>{repo.name}</a>
-            <button onClick={toggleIsOpen}>add @tag</button>
-            {isOpen && (
-              <div className={styles.popup}>
-                <input type="text" autoFocus={true} placeholder="@tag" onKeyDown={handleInputKeyDown} />
-              </div>
-            )}
-            <p>{repo.description}</p>
-          </li>);
+          return <Repository >{repo}</Repository>;
         })}
       </ul>
     </div>
   );
+}
+
+function Repository({ children }: RepositoryProps) {
+  const [popupHidden, setPopupHidden] = useState(true);
+  const togglePopup = () => { setPopupHidden(!popupHidden); };
+
+  return (<li key={children.id}>
+    <a href={children.url}>{children.name}</a>
+    <button onClick={togglePopup}>add @tag</button>
+    {!popupHidden &&
+      <div className={styles.popup}>
+        <input type="text" autoFocus={true} placeholder="@tag" />
+      </div>
+    }
+    <p>{children.description}</p>
+  </li>);
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -54,7 +55,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      starredRepos
+      searchResults: starredRepos
     }
   };
 };
