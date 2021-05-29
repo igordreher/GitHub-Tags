@@ -5,7 +5,7 @@ import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider session={pageProps.session}>
+    <Provider session={pageProps.session} options={{ clientMaxAge: 60 * 60 }}>
       <Header />
       <Component {...pageProps} />
     </Provider>
