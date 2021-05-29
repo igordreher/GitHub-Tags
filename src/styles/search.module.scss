@@ -34,6 +34,28 @@
         display: flex;
       }
 
+      .tags {
+        list-style: none;
+        display: flex;
+        margin-left: 10px;
+
+        li {
+          padding: 0 10px;
+          margin: 0 5px;
+          border: 1px solid transparent;
+          background: var(--background-tag);
+          border-radius: 2em;
+
+          button {
+            border: 0;
+            background: local;
+          }
+
+          span {
+          }
+        }
+      }
+
       button {
         margin-left: auto;
         margin-right: 9px;

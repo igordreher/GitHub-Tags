@@ -37,16 +37,41 @@ export default function Search({ searchResults }: SearchProps) {
 
 function Repository({ children }: RepositoryProps) {
   const [popupHidden, setPopupHidden] = useState(true);
+  const [inputValue, setInputValue] = useState('');
+  const [tags, setTags] = useState([]);
+
   const togglePopup = () => { setPopupHidden(!popupHidden); };
+
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+
+  const handleTagSubmit = (event) => {
+    if (event.key === 'Enter')
+      setTags(tags.concat(inputValue));
+  };
 
   return (<li key={children.id}>
     <div className={styles.repoHeader}>
       <a href={children.url}>{children.name}</a>
+      <ul className={styles.tags}>
+        {tags.map((tag, index) => {
+          return (<li key={index}>
+            <button>{tag}</button>
+            <span>x</span>
+          </li>);
+        })}
+      </ul>
       <button onClick={togglePopup}>add @tag</button>
     </div>
     {!popupHidden &&
       <div className={styles.popup}>
-        <input type="text" autoFocus={true} placeholder="@tag" />
+        <input type="text"
+          autoFocus={true}
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyDown={handleTagSubmit}
+        />
       </div>
     }
     <p>{children.description}</p>
