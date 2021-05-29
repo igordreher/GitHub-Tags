@@ -30,8 +30,13 @@
         padding-top: 3px;
       }
 
+      .repoHeader {
+        display: flex;
+      }
+
       button {
-        margin-left: 24px;
+        margin-left: auto;
+        margin-right: 9px;
         background: var(--background-button);
 
         padding: 3px 12px;
@@ -53,7 +58,7 @@
           text-align: center;
 
           position: absolute;
-          left: 150px;
+          right: 0;
           top: -70px;
         }
       }

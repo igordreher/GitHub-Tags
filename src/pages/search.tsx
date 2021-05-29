@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import { getStarredRepos } from './api/starred';
 import styles from '../styles/search.module.scss';
+import { getSession } from 'next-auth/client';
 
 interface Repository {
   id: number;
@@ -39,8 +40,10 @@ function Repository({ children }: RepositoryProps) {
   const togglePopup = () => { setPopupHidden(!popupHidden); };
 
   return (<li key={children.id}>
-    <a href={children.url}>{children.name}</a>
-    <button onClick={togglePopup}>add @tag</button>
+    <div className={styles.repoHeader}>
+      <a href={children.url}>{children.name}</a>
+      <button onClick={togglePopup}>add @tag</button>
+    </div>
     {!popupHidden &&
       <div className={styles.popup}>
         <input type="text" autoFocus={true} placeholder="@tag" />
@@ -51,6 +54,15 @@ function Repository({ children }: RepositoryProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+  if (!session) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/'
+      }
+    };
+  }
   const starredRepos = await getStarredRepos(ctx);
 
   return {
