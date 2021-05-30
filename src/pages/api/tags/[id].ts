@@ -1,6 +1,6 @@
 import { NextApiHandler } from 'next';
 import { getSession } from 'next-auth/client';
-import prisma from '../../../lib/prisma';
+import prisma from 'lib/prisma';
 
 const deleteTag = async (id: number) => {
     await prisma.tag.delete({ where: { id } });

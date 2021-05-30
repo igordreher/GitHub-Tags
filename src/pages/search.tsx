@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
-import styles from '../styles/search.module.scss';
+import styles from 'styles/search.module.scss';
 import { getStarredRepos } from './api/starred';
-import Repository from '../components/Repository';
+import Repository from 'components/Repository';
 import { getTags } from './api/tags';
-import filterRepos from '../utils/filterRepos';
+import filterRepos from 'utils/filterRepos';
 
 interface Tag {
   id: number;

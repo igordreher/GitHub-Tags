@@ -16,7 +16,7 @@ export const getStarredRepos = async (ctx: GetServerSidePropsContext) => {
     const { data } = await axios.get<Repo[]>(`https://api.github.com/users/${name}/starred`);
 
     const filter = q.charAt(0) != '@' ? data.filter((repo) => {
-        return repo.full_name.includes(q as string);
+        return repo.full_name.toLowerCase().includes(q.toLowerCase() as string);
     }) : data;
 
     return filter.map((repo) => {

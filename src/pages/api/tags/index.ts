@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest } from 'next';
 import { getSession } from 'next-auth/client';
-import prisma from '../../../lib/prisma';
+import prisma from 'lib/prisma';
 
 export const getTags = async (ctx) => {
     const session = await getSession(ctx);
