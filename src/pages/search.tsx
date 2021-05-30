@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
-import { useState } from 'react';
 import styles from '../styles/search.module.scss';
 import { getStarredRepos } from './api/starred';
 import Repository from '../components/Repository';
 import { getTags } from './api/tags';
+import filterRepos from '../utils/filterRepos';
 
 
 interface Repository {
@@ -20,14 +20,13 @@ interface SearchProps {
 }
 
 export default function Search({ searchResults }: SearchProps) {
-  const [repos, setRepos] = useState<Repository[]>(searchResults);
 
   return (
     <div className={styles.container}>
       {searchResults ?
         <ul className={styles.repoList}>
-          <h3>{repos.length} repository results</h3>
-          {repos.map(repo => {
+          <h3>{searchResults.length} repository results</h3>
+          {searchResults.map(repo => {
             return (
               <li key={repo.id}>
                 <Repository >{repo}</Repository>;
@@ -40,31 +39,6 @@ export default function Search({ searchResults }: SearchProps) {
     </div>
   );
 }
-
-export const filterRepos = (starredRepos, tags, tagName: string) => {
-  const regex = RegExp(`^(${tagName}).*`, 'i');
-
-  if (tags.length == 0) return starredRepos;
-
-  const filter = starredRepos.filter(repo => {
-    return tags.some(tag => {
-      return tag.repoId === repo.id && tag.tagName.match(regex);
-    });
-  });
-
-  const tagRepos = () => {
-    return filter.map(repo => {
-      const repoTags = [];
-      tags.forEach(tag => {
-        if (tag.repoId == repo.id)
-          repoTags.push(tag.tagName);
-      });
-
-      return { ...repo, tags: repoTags };
-    });
-  };
-  return tagRepos();
-};
 
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
