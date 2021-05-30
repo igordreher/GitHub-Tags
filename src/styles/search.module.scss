@@ -45,13 +45,31 @@
           border: 1px solid transparent;
           background: var(--background-tag);
           border-radius: 2em;
+          display: flex;
+          align-items: center;
 
           button {
-            border: 0;
-            background: local;
+            display: none;
           }
 
-          span {
+          .deleteTag {
+            display: inline;
+            background: local;
+            font-weight: bold;
+            border: 0;
+            padding: 0;
+          }
+
+          .hidden {
+            display: none;
+          }
+
+          input {
+            border: 0;
+            width: 5em;
+            background: inherit;
+            padding: 0;
+            font-size: inherit;
           }
         }
       }
