@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import Repository from 'components/Repository';
 
-describe('Repository', () => {
+describe('Repository visual', () => {
     const repo = {
         id: 1,
         description: "desc",
@@ -19,8 +19,28 @@ describe('Repository', () => {
             getByText(tag);
         });
         getByText("add @tag");
-        !getByText(repo.id);
     });
 
-    // test('');
+    test('Tag is added', () => {
+        const { getByText, getByPlaceholderText } = render(<Repository>{repo}</Repository>);
+
+        const button = getByText('add @tag');
+        fireEvent.click(button);
+        const input = getByPlaceholderText('tag name');
+        fireEvent.change(input, { target: { value: 'new tag' } });
+        fireEvent.keyDown(input, { key: 'Enter' });
+
+        getByText('new tag');
+    });
+
+    test('Tag is deleted', () => {
+        const { getByText, getAllByText } = render(<Repository>{repo}</Repository>);
+
+        const tag = getByText('tag1');
+        fireEvent.click(tag);
+        const closeButton = getAllByText('x')[0];
+        fireEvent.mouseDown(closeButton);
+
+        expect(tag).not.toBeInTheDocument();
+    });
 }); 

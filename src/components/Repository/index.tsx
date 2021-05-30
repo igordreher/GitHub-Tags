@@ -56,7 +56,7 @@ export default function Repository({ children: repo }: RepositoryProps) {
             <a href={repo.url}>{repo.name}</a>
             <ul className={styles.tags}>
                 {tags.map((tag, index) => {
-                    return (<li key={tag + index}>
+                    return (<li key={tag}>
                         <Editext
                             value={tag}
                             editOnViewClick={true}
@@ -67,9 +67,9 @@ export default function Repository({ children: repo }: RepositoryProps) {
                             onCancel={toggleEditingTag}
                             onSave={(value) => { editTag(value, index); }}
                         />
-                        <div className={!isEditingTag && styles.hidden}>
+                        {isEditingTag &&
                             <button onMouseDown={() => { deleteTag(index); }} className={styles.deleteTag}>x</button>
-                        </div>
+                        }
                     </li>);
                 })}
             </ul>
@@ -83,10 +83,10 @@ export default function Repository({ children: repo }: RepositoryProps) {
                     value={inputValue}
                     onChange={handleInputChange}
                     onKeyDown={createTag}
+                    placeholder="tag name"
                 />
             </div>
         }
         <p>{repo.description}</p>
-        {repo.id}
     </div >);
 }
