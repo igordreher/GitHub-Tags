@@ -16,11 +16,11 @@ describe('Repository', () => {
         const { getByText } = render(<Repository>{repo}</Repository>);
 
         expect(getByText(repo.name)).toHaveAttribute('href', repo.url);
-        expect(getByText(repo.description)).toBeDefined();
+        expect(getByText(repo.description));
         repo.tags.forEach(tag => {
-            expect(getByText(tag.name)).toBeDefined();
+            expect(getByText(tag.name));
         });
-        expect(getByText("add @tag")).toBeDefined();
+        expect(getByText("add @tag"));
     });
 
     test('Tag is added', async () => {
@@ -37,7 +37,7 @@ describe('Repository', () => {
         fireEvent.keyDown(input, { key: 'Enter' });
 
         await waitFor(() => {
-            expect(getByText('new tag')).toBeDefined();
+            expect(getByText('new tag'));
             expect(api.post).toBeCalledWith('/tags', { repoId: 1, tagName: 'new tag' });
         });
     });
@@ -72,7 +72,7 @@ describe('Repository', () => {
         fireEvent.keyDown(editableTag, { key: 'Enter' });
 
         await waitFor(() => {
-            expect(getByText('new value')).toBeDefined();
+            expect(getByText('new value'));
             expect(api.patch).toBeCalledWith('/tags/' + 1, { tagName: 'new value' });
         });
     });

@@ -18,15 +18,15 @@ describe('Header', () => {
         mockSession(true);
         const { getByText, getByAltText } = render(<Header />);
 
-        expect(getByAltText('User Avatar')).toBeDefined();
-        expect(getByText('Signed in as Name')).toBeDefined();
-        expect(getByText('Sign out')).toBeDefined();
+        expect(getByAltText('User Avatar'));
+        expect(getByText('Signed in as Name'));
+        expect(getByText('Sign out'));
     });
 
     test('Sign in button when no session', () => {
         mockSession(false);
         const { getByText } = render(<Header />);
 
-        expect(getByText('Sign in')).toBeDefined();
+        expect(getByText('Sign in'));
     });
 });
