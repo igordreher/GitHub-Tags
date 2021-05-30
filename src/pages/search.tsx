@@ -29,7 +29,7 @@ export default function Search({ searchResults }: SearchProps) {
           {searchResults.map(repo => {
             return (
               <li key={repo.id}>
-                <Repository >{repo}</Repository>;
+                <Repository >{repo}</Repository>
               </li>
             );
           })}
