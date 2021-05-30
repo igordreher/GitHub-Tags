@@ -8,7 +8,7 @@ export default function Header() {
     <header className={styles.headerContainer}>
       {session ? (<>
         <form action="/search">
-          <input type="search" name="q" id="" alt="Search repo by @tag" />
+          <input type="search" name="q" id="" placeholder="Search repo by @tag" />
         </form>
         <details className={styles.detailsOverlay}>
           <summary>

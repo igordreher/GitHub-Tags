@@ -39,7 +39,12 @@ export default function Search({ searchResults }: SearchProps) {
             );
           })}
         </ul>
-        : <span>Search for starred repositories by @tags</span>
+        : <>
+          <div className={styles.emptyQuery}>
+            <h2>Search for starred repositories by @tags</h2>
+            <span>Use @ + tag name to search by tags</span>
+          </div>
+        </>
       }
     </div>
   );
