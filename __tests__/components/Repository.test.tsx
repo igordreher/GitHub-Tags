@@ -1,7 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import Repository from 'components/Repository';
 
-describe('Repository visual', () => {
+describe('Repository', () => {
     const repo = {
         id: 1,
         description: "desc",
@@ -14,11 +14,11 @@ describe('Repository visual', () => {
         const { getByText } = render(<Repository>{repo}</Repository>);
 
         expect(getByText(repo.name)).toHaveAttribute('href', repo.url);
-        getByText(repo.description);
+        expect(getByText(repo.description)).toBeDefined();
         repo.tags.forEach(tag => {
-            getByText(tag);
+            expect(getByText(tag)).toBeDefined();
         });
-        getByText("add @tag");
+        expect(getByText("add @tag")).toBeDefined();
     });
 
     test('Tag is added', () => {
@@ -30,7 +30,7 @@ describe('Repository visual', () => {
         fireEvent.change(input, { target: { value: 'new tag' } });
         fireEvent.keyDown(input, { key: 'Enter' });
 
-        getByText('new tag');
+        expect(getByText('new tag')).toBeDefined();
     });
 
     test('Tag is deleted', () => {
@@ -42,5 +42,30 @@ describe('Repository visual', () => {
         fireEvent.mouseDown(closeButton);
 
         expect(tag).not.toBeInTheDocument();
+    });
+
+    test('Tag is edited', () => {
+        const { getByText, getByDisplayValue } = render(<Repository>{repo}</Repository>);
+
+        const tag = getByText('tag1');
+        fireEvent.click(tag);
+        const editableTag = getByDisplayValue('tag1');
+        fireEvent.change(editableTag, { target: { value: 'new value' } });
+        fireEvent.keyDown(editableTag, { key: 'Enter' });
+
+        expect(getByText('new value')).toBeDefined();
+    });
+
+    test('Tag editing is canceled', () => {
+        const { getByText, getByDisplayValue, queryByText } = render(<Repository>{repo}</Repository>);
+
+        const tag = getByText('tag1');
+        fireEvent.click(tag);
+        const editableTag = getByDisplayValue('tag1');
+        fireEvent.change(editableTag, { target: { value: 'new value' } });
+        fireEvent.focusOut(editableTag);
+
+        const editedTag = queryByText('new value');
+        expect(editedTag).not.toBeInTheDocument();
     });
 }); 
