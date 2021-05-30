@@ -1,10 +1,11 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/client';
-import styles from 'styles/search.module.scss';
 import { getStarredRepos } from './api/starred';
-import Repository from 'components/Repository';
 import { getTags } from './api/tags';
+import Repository from 'components/Repository';
 import filterRepos from 'utils/filterRepos';
+
+import styles from 'styles/search.module.scss';
 
 interface Tag {
   id: number;
@@ -38,7 +39,7 @@ export default function Search({ searchResults }: SearchProps) {
             );
           })}
         </ul>
-        : <span>Search for starred and tagged repositories</span>
+        : <span>Search for starred repositories by @tags</span>
       }
     </div>
   );
