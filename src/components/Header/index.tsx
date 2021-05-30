@@ -21,7 +21,7 @@ export default function Header() {
           </menu>
         </details>
       </>) : (<>
-        <button onClick={() => signIn('github')}>Sign in</button>
+        <button className={styles.signIn} onClick={() => signIn('github')}>Sign in</button>
       </>)
       }
     </header>

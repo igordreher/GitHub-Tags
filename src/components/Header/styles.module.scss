@@ -60,4 +60,13 @@
       color: inherit;
     }
   }
+
+  .signIn {
+    margin-left: auto;
+    padding: 4px 8px;
+    color: var(--text-white);
+    font-size: 16px;
+    border: 1px solid var(--border-login);
+    border-radius: 6px;
+  }
 }
