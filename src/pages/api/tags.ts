@@ -2,27 +2,25 @@ import { NextApiHandler, NextApiRequest } from 'next';
 import { getSession } from 'next-auth/client';
 import prisma from '../../lib/prisma';
 
-export const getTaggedRepos = async (props) => {
-    const session = await getSession(props);
-    const q = props.query.q as string || '';
-    const tagName = q.startsWith('@') ? q.substr(1, -1) : '';
+export const getTags = async (ctx, tagName: string) => {
+    const session = await getSession(ctx);
 
-    const tagged = await prisma.taggedRepositories.findMany(
+    const tagged = await prisma.tag.findMany(
         { where: { userId: session.id, tagName } });
 
     return tagged;
 };
 
-const postTaggedRepo = async (req: NextApiRequest) => {
+const postTag = async (req: NextApiRequest) => {
     const session = await getSession({ req });
     const { repoId, tagName } = req.body;
     const data = { repoId, tagName, userId: session.id as number };
-    await prisma.taggedRepositories.create({ data });
+    await prisma.tag.create({ data });
 };
 
 const tagsHandler: NextApiHandler = async (req, res) => {
-    if (req.method === 'post') {
-        await postTaggedRepo(req);
+    if (req.method === 'POST') {
+        await postTag(req);
         res.status(201);
     }
 };

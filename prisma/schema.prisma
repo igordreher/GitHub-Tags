@@ -7,13 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model TaggedRepositories {
+model Tag {
   id      Int    @id @default(autoincrement())
   userId  Int    @map(name: "user_id")
   repoId  Int    @map(name: "repo_id")
   tagName String @map(name: "tag_name")
 
-  @@map(name: "tagged_repositories")
+  @@map(name: "tags")
 }
 
 model User {
