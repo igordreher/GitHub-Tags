@@ -19,7 +19,7 @@ export default function Repository({ children: repo }: RepositoryProps) {
     const [popupHidden, setPopupHidden] = useState(true);
     const [isEditingTag, setIsEditingTag] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    const [tags, setTags] = useState([]);
+    const [tags, setTags] = useState(repo.tags);
 
     const togglePopup = () => { setPopupHidden(!popupHidden); };
     const toggleEditingTag = () => { setIsEditingTag(!isEditingTag); };
@@ -29,10 +29,12 @@ export default function Repository({ children: repo }: RepositoryProps) {
     };
 
     const createTag = async (event) => {
-        if (event.key === 'Enter' && !tags.includes(inputValue)) {
-            setTags(tags.concat(inputValue));
+        if (event.key === 'Enter') {
             setInputValue('');
             togglePopup();
+            if (inputValue.length != 0 && !tags.includes(inputValue)) {
+                setTags(tags.concat(inputValue));
+            }
         }
     };
 
@@ -49,12 +51,12 @@ export default function Repository({ children: repo }: RepositoryProps) {
         toggleEditingTag();
     };
 
-    return (<li className={styles.repo} key={repo.id}>
+    return (<div className={styles.repo} >
         <div className={styles.repoHeader}>
             <a href={repo.url}>{repo.name}</a>
             <ul className={styles.tags}>
                 {tags.map((tag, index) => {
-                    return (<li key={tag}>
+                    return (<li key={tag + index}>
                         <Editext
                             value={tag}
                             editOnViewClick={true}
@@ -85,5 +87,6 @@ export default function Repository({ children: repo }: RepositoryProps) {
             </div>
         }
         <p>{repo.description}</p>
-    </li >);
+        {repo.id}
+    </div >);
 }
