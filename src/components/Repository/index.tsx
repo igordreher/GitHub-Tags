@@ -1,14 +1,20 @@
 import { useState } from 'react';
+import api from '../../services/api';
 import Editext from 'react-editext';
 
 import styles from './styles.module.scss';
+
+interface Tag {
+    id: number;
+    name: string;
+}
 
 interface Repository {
     id: number;
     name: string;
     description: string;
     url: string;
-    tags?: string[];
+    tags: Tag[];
 }
 
 interface RepositoryProps {
@@ -32,20 +38,28 @@ export default function Repository({ children: repo }: RepositoryProps) {
         if (event.key === 'Enter') {
             setInputValue('');
             togglePopup();
-            if (inputValue.length != 0 && !tags.includes(inputValue)) {
-                setTags(tags.concat(inputValue));
+            const tagExists = tags.some(tag => tag.name === inputValue);
+
+            if (inputValue.length != 0 && !tagExists) {
+                const { data } = await api.post('/tags', { repoId: repo.id, tagName: inputValue });
+                const tag = { name: data.tagName, id: data.id };
+                setTags(tags.concat(tag));
             }
         }
     };
 
-    const deleteTag = (tagIndex: number) => {
-        setTags(tags.filter((tag, index) => index !== tagIndex));
+    const deleteTag = async (deletingTag: Tag) => {
+        setTags(tags.filter((tag) => tag.id !== deletingTag.id));
+        await api.delete('/tags/' + deletingTag.id);
         toggleEditingTag();
     };
 
-    const editTag = (tagName: string, tagIndex: number) => {
-        setTags(tags.map((tag, index) => {
-            if (index === tagIndex) return tagName;
+    const editTag = async (tagName: string, id: number) => {
+        const { data } = await api.patch('/tags/' + id, { tagName });
+        const editedTag = { id: data.id, name: data.tagName };
+
+        setTags(tags.map((tag) => {
+            if (tag.id === editedTag.id) return editedTag;
             return tag;
         }));
         toggleEditingTag();
@@ -55,20 +69,20 @@ export default function Repository({ children: repo }: RepositoryProps) {
         <div className={styles.repoHeader}>
             <a href={repo.url}>{repo.name}</a>
             <ul className={styles.tags}>
-                {tags.map((tag, index) => {
-                    return (<li key={tag}>
+                {tags.map((tag) => {
+                    return (<li key={tag.id}>
                         <Editext
-                            value={tag}
+                            value={tag.name}
                             editOnViewClick={true}
                             submitOnEnter={true}
                             cancelOnEscape={true}
                             cancelOnUnfocus={true}
                             onEditingStart={toggleEditingTag}
                             onCancel={toggleEditingTag}
-                            onSave={(value) => { editTag(value, index); }}
+                            onSave={(value) => { editTag(value, tag.id); }}
                         />
                         {isEditingTag &&
-                            <button onMouseDown={() => { deleteTag(index); }} className={styles.deleteTag}>x</button>
+                            <button onMouseDown={() => { deleteTag(tag); }} className={styles.deleteTag}>x</button>
                         }
                     </li>);
                 })}

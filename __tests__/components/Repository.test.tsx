@@ -1,5 +1,7 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import Repository from 'components/Repository';
+import api from 'services/api';
+
 
 describe('Repository', () => {
     const repo = {
@@ -7,7 +9,7 @@ describe('Repository', () => {
         description: "desc",
         name: "owner/repo",
         url: "https://github.com/owner/repo",
-        tags: ["tag1", "tag2"]
+        tags: [{ name: "tag1", id: 1 }, { name: "tag2", id: 2 }]
     };
 
     test('Repository rendered with correct values', () => {
@@ -16,13 +18,17 @@ describe('Repository', () => {
         expect(getByText(repo.name)).toHaveAttribute('href', repo.url);
         expect(getByText(repo.description)).toBeDefined();
         repo.tags.forEach(tag => {
-            expect(getByText(tag)).toBeDefined();
+            expect(getByText(tag.name)).toBeDefined();
         });
         expect(getByText("add @tag")).toBeDefined();
     });
 
-    test('Tag is added', () => {
+    test('Tag is added', async () => {
         const { getByText, getByPlaceholderText } = render(<Repository>{repo}</Repository>);
+
+        api.post = jest.fn(() => Promise.resolve({
+            data: { id: 3, tagName: 'new tag', repoId: 1 }
+        }) as any);
 
         const button = getByText('add @tag');
         fireEvent.click(button);
@@ -30,22 +36,34 @@ describe('Repository', () => {
         fireEvent.change(input, { target: { value: 'new tag' } });
         fireEvent.keyDown(input, { key: 'Enter' });
 
-        expect(getByText('new tag')).toBeDefined();
+        await waitFor(() => {
+            expect(getByText('new tag')).toBeDefined();
+            expect(api.post).toBeCalledWith('/tags', { repoId: 1, tagName: 'new tag' });
+        });
     });
 
-    test('Tag is deleted', () => {
+    test('Tag is deleted', async () => {
         const { getByText, getAllByText } = render(<Repository>{repo}</Repository>);
+
+        api.delete = jest.fn();
 
         const tag = getByText('tag1');
         fireEvent.click(tag);
         const closeButton = getAllByText('x')[0];
         fireEvent.mouseDown(closeButton);
 
-        expect(tag).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(tag).not.toBeInTheDocument();
+            expect(api.delete).toBeCalledWith('/tags/' + 1);
+        });
     });
 
-    test('Tag is edited', () => {
+    test('Tag is edited', async () => {
         const { getByText, getByDisplayValue } = render(<Repository>{repo}</Repository>);
+
+        api.patch = jest.fn(() => Promise.resolve({
+            data: { id: 1, tagName: 'new value', repoId: 1 }
+        }) as any);
 
         const tag = getByText('tag1');
         fireEvent.click(tag);
@@ -53,11 +71,16 @@ describe('Repository', () => {
         fireEvent.change(editableTag, { target: { value: 'new value' } });
         fireEvent.keyDown(editableTag, { key: 'Enter' });
 
-        expect(getByText('new value')).toBeDefined();
+        await waitFor(() => {
+            expect(getByText('new value')).toBeDefined();
+            expect(api.patch).toBeCalledWith('/tags/' + 1, { tagName: 'new value' });
+        });
     });
 
     test('Tag editing is canceled', () => {
         const { getByText, getByDisplayValue, queryByText } = render(<Repository>{repo}</Repository>);
+
+        api.patch = jest.fn();
 
         const tag = getByText('tag1');
         fireEvent.click(tag);
@@ -67,5 +90,6 @@ describe('Repository', () => {
 
         const editedTag = queryByText('new value');
         expect(editedTag).not.toBeInTheDocument();
+        expect(api.patch).not.toBeCalled();
     });
 }); 

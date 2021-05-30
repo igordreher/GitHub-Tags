@@ -6,13 +6,17 @@ import Repository from '../components/Repository';
 import { getTags } from './api/tags';
 import filterRepos from '../utils/filterRepos';
 
+interface Tag {
+  id: number;
+  name: string;
+}
 
 interface Repository {
   id: number;
   name: string;
   description: string;
   url: string;
-  tags?: string[];
+  tags: Tag[];
 }
 
 interface SearchProps {
@@ -53,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
   const q = ctx.query.q as string;
 
-  if (q) {
+  if (typeof (q) === 'string') {
     const starredRepos = await getStarredRepos(ctx);
     const tags = await getTags(ctx);
     const tagName = q.startsWith('@') ? q.substr(1) : '';
