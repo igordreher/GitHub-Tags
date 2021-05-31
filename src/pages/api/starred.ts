@@ -13,7 +13,11 @@ export const getStarredRepos = async (ctx: GetServerSidePropsContext) => {
     const session = await getSession(ctx);
     const q = ctx.query.q as string || '';
     const name = session.user.name.replace(' ', '');
-    const { data } = await axios.get<Repo[]>(`https://api.github.com/users/${name}/starred`);
+    const { data } = await axios.get<Repo[]>(`https://api.github.com/users/${name}/starred`, {
+        headers: {
+            'Authorization': process.env.GITHUB_SECRET
+        }
+    });
 
     const filter = q.charAt(0) != '@' ? data.filter((repo) => {
         return repo.full_name.toLowerCase().includes(q.toLowerCase() as string);
