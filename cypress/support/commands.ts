@@ -12,7 +12,7 @@ declare namespace Cypress {
 }
 
 Cypress.Commands.add('getBySel', (selector, ...args) => {
-    return cy.get(`[data-cy=${selector}]`, ...args);
+    return cy.get(`[data-cy="${selector}"]`, ...args);
 });
 
 Cypress.Commands.add('logout', () => {
@@ -21,6 +21,8 @@ Cypress.Commands.add('logout', () => {
 });
 
 Cypress.Commands.add('login', () => {
+    cy.log(`Visiting ${Cypress.env('SITE_NAME')}`);
+    cy.visit('/');
     const username = Cypress.env('GITHUB_USER');
     const password = Cypress.env('GITHUB_PW');
     const loginUrl = Cypress.env('SITE_NAME');
@@ -32,8 +34,8 @@ Cypress.Commands.add('login', () => {
         headless: true,
         logs: true,
         isPopup: true,
-        loginSelector: cy.getBySel('sign-in'),
-        postLoginSelector: cy.getBySel('user-menu'),
+        loginSelector: '[data-cy=sign-in]',
+        postLoginSelector: '[data-cy=user-menu]'
     };
 
     return cy
