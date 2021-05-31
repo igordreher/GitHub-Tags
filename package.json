@@ -1,12 +1,14 @@
 {
-  "name": "github-tags-web",
+  "name": "github-tags",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@prisma/client": "^2.23.0",
@@ -26,6 +28,8 @@
     "@types/node": "^15.6.1",
     "@types/react": "^17.0.8",
     "babel-jest": "^27.0.2",
+    "cypress": "^7.4.0",
+    "cypress-social-logins": "^1.11.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.3",
     "prisma": "^2.23.0",
