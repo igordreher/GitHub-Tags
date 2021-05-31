@@ -32,6 +32,8 @@ const tagsHandler: NextApiHandler = async (req, res) => {
             res.status(500).end();
         }
     }
+
+    res.end();
 };
 
 export default tagsHandler;
