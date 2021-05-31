@@ -10,7 +10,7 @@ export default function Header() {
         <form action="/search">
           <input type="search" name="q" id="" placeholder="Search repo by @tag" />
         </form>
-        <details className={styles.detailsOverlay}>
+        <details data-cy="user-menu" className={styles.detailsOverlay}>
           <summary>
             <img src={session.user.image} alt="User Avatar" className={styles.userAvatar} sizes="20" />
           </summary>
@@ -23,7 +23,7 @@ export default function Header() {
           </menu>
         </details>
       </>) : (<>
-        <button className={styles.signIn} onClick={() => signIn('github')}>Sign in</button>
+        <button data-cy="sign-in" className={styles.signIn} onClick={() => signIn('github')}>Sign in</button>
       </>)
       }
     </header>
