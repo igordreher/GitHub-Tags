@@ -13,6 +13,8 @@ services:
             - db
         ports:
             - 3000:3000
+        volumes:
+            - ./src:/usr/app/src
 
     db:
         image: postgres:13
