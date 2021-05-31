@@ -19,7 +19,7 @@ describe('Header', () => {
         const { getByText, getByAltText } = render(<Header />);
 
         expect(getByAltText('User Avatar'));
-        expect(getByText('Signed in as Name'));
+        expect(getByText('Signed in as')).toContainHTML('<strong>Name</strong>');
         expect(getByText('Sign out'));
     });
 

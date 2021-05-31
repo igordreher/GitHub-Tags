@@ -15,6 +15,7 @@ services:
             - 3000:3000
         volumes:
             - ./src:/usr/app/src
+            - ./__tests__:/usr/app/__tests__
 
     db:
         image: postgres:13
