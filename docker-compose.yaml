@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+    web:
+        build: .
+        container_name: github-tags
+        command: sh -c "npx -- prisma db push && npm run dev"
+        environment:
+            DATABASE_URL: postgresql://postgres:postgres@db/tests
+        depends_on:
+            - db
+        links:
+            - db
+        ports:
+            - 3000:3000
+
+    db:
+        image: postgres:13
+        restart: always
+        container_name: integration-test
+        ports:
+            - "5433:5432"
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: tests
