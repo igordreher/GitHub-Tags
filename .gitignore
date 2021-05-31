@@ -36,3 +36,5 @@ yarn-error.log*
 .env
 .vscode
 cypress.env.json
+cypress/videos
+cypress/screenshots
