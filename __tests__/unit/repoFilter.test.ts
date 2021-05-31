@@ -26,10 +26,18 @@ describe('Repo Filter', () => {
         return filterRepos(starredRepos, tags, tagName);
     };
 
+    const emptyTags = (tagName) => {
+        return filterRepos(starredRepos, [], tagName);
+    };
+
     it('Should correctly filter repositories', () => {
         expect(testFilterRepos('tag')).toStrictEqual(allTaggedRepos);
         expect(testFilterRepos('tag1')).toStrictEqual(allTaggedRepos);
         expect(testFilterRepos('ag1')).toStrictEqual([]);
         expect(testFilterRepos('')).toStrictEqual(allReposTagged);
+        expect(emptyTags('')).toStrictEqual(
+            starredRepos.map(repo => {
+                return { ...repo, tags: [] };
+            }));
     });
 });

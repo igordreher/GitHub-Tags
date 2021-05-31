@@ -11,8 +11,6 @@ interface Tag {
 export default (starredRepos: Repository[], tags: Tag[], tagName: string) => {
     const regex = RegExp(`^(${tagName}).*`, 'i');
 
-    if (tags.length == 0) return starredRepos;
-
     const filter = tagName ? starredRepos.filter(repo => {
         return tags.some(tag => {
             return tag.repoId === repo.id && tag.tagName.match(regex);
