@@ -2,11 +2,12 @@ FROM node:alpine
 
 WORKDIR /usr/app
 
-COPY package*.json ./
-RUN npm i
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn
 
 COPY . .
 
 EXPOSE 3000
 
-CMD npm run dev
+CMD yarn dev

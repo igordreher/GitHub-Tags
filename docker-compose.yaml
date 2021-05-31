@@ -4,7 +4,7 @@ services:
     web:
         build: .
         container_name: github-tags
-        command: sh -c "npx -- prisma db push && npm run dev"
+        command: sh -c "yarn prisma db push && yarn dev"
         environment:
             DATABASE_URL: postgresql://postgres:postgres@db/tests
         depends_on:
@@ -19,7 +19,7 @@ services:
     db:
         image: postgres:13
         restart: always
-        container_name: integration-test
+        container_name: github-tags-db-dev
         ports:
             - "5433:5432"
         environment:
