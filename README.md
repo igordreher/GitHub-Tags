@@ -1,10 +1,6 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 
-## Deploy
-
-The production deploy is available at [github-tags.vercel.app](https://github-tags.vercel.app/)
-
 ## Getting Started
 
 - In order to run the app locally, you need to create e [GitHub App](https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps).
